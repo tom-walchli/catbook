@@ -2,20 +2,61 @@ class CatsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   before_action :load_cat_of_the_month, only: :index
-  before_action :load_cat, except: :index
+  before_action :load_cat, only: [:show, :edit]
 
   def index
     page  = params[:page].to_i || 1
 
+    @my_cache_key = 'xyz' #cache_key(@page)
     # page scope is provided by kamikari gem
     # https://github.com/amatsuda/kaminari/blob/master/lib/kaminari/models/active_record_model_extension.rb#L13
     @cats = Cat.visible.select(:id, :name, :birthday).page(page)
+  end
+
+  def new
+    @cat = Cat.new
+  end
+
+  def create
+    new_cat_info = params.require(:cat).permit(:name, :email, :password)
+    @cat = Cat.new(new_cat_info)
+
+    if !@cat.save
+      render :new
+    else
+      redirect_to('login')
+    end
+  end
+
+  def login
+    @cat = Cat.new()
+  end
+
+  def authenticate
+    cat_login = params.require(:cat).permit(:email, :password)
+    cat = Cat.find_by(email: cat_login[:email]).try(:authenticate,cat_login[:password])
+
+    if !cat
+      @cat = Cat.new(email: cat_login[:email])
+      render('login')
+    else 
+      session['cat_id'] = cat.id
+      redirect_to(:cat_path, cat.id)
+    end
   end
 
   def show
   end
 
   def edit
+    unless params[:id].to_i == session[:cat_id]
+      redirect_to(edit_cat_user_path)
+    end
+  end
+
+  def edit_cat_user
+    @cat = @cat_user
+    render('edit')
   end
 
   def update
@@ -67,4 +108,13 @@ class CatsController < ApplicationController
     #
     # @cat_of_the_month = Cat.find(cat_of_month_id) if cat_of_month_id
   end
+
+  def get_cat_user
+    @cat_user = Cat.find_by(id: session[:cat_id])
+  end
+
+  private def load_cat_from_url
+    @cat = Cat.where("id = #{params[:id]}")
+  end
+
 end

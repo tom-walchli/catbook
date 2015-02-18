@@ -4,5 +4,10 @@ Rails.application.routes.draw do
 
   root 'cats#index'
 
-  resources :cats, only: [:index, :show, :edit, :update]
+  post 'authenticate' => "cats#authenticate"
+
+  get 'edit_cat_user' => "cats#edit_cat_user" , as: 'edit_cat_user'
+  get '/login' => "cats#login"
+
+  resources :cats
 end

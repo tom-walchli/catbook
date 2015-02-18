@@ -9,9 +9,23 @@ require 'faker'
 #
 
 # Is this the best place to put this kind of seeding?
-case Rails.env
-when "development"
-  1000.times do |i|
-    Cat.create!(name: Faker::Name.name, birthday: Faker::Date.birthday)
-  end
+print "seeding" 
+1000.times do |i|
+#	Cat.create!(name: Faker::Name.name, birthday: Faker::Date.birthday)
+	rand(6).times do |k|
+		rand2 = rand(1000)
+		if rand2 != i
+			FollowerRelation.create(cat_id: i, followed_cat_id: rand2)
+		end
+
+	end
+
+	if i%10 == 0 
+		print '.'
+	end
 end
+
+
+# 	Cat.create!(name: Faker::Name.name, birthday: Faker::Date.birthday)
+
+puts "\nseeded!!"
