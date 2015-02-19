@@ -4,7 +4,7 @@ class CatsController < ApplicationController
   before_action :load_cat_of_the_month, only: :index
   before_action :load_cat, only: [:show, :edit, :update]
 
-  before_action :authenticate_cat! except: [:new, :create, :login, :authenticate]
+#  before_action :authenticate_cat! except: [:new, :create, :login, :authenticate]
 
   def index
     page  = params[:page].to_i || 1
@@ -81,19 +81,6 @@ class CatsController < ApplicationController
     render text: 'Not Found', status: '404' unless @cat
   end
 
-  def random
-    cat = Cat.select(:id, :name, :email, :sign_in_count).order('RANDOM()').first
-    render(json: cat)
-  end
-
-  def api_show
-    cat = Cat.select(:id, :name, :email, :sign_in_count).where(id: params[:id]).first
-    render(json: cat)
-  end
-  def api_index
-    cats = Cat.select(:id, :name, :email, :sign_in_count).limit(25)
-    render(json: cats)
-  end
 
   def cats_params
     { visible: true }.merge(params[:cat])
