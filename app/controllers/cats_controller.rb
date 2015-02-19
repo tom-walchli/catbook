@@ -116,7 +116,8 @@ class CatsController < ApplicationController
     @cat_user = Cat.find_by(id: session[:cat_id])
   end
 
-  private def load_cat_from_url
+  private 
+  def load_cat_from_url
     @cat = Cat.where("id = #{params[:id]}")
   end
 
