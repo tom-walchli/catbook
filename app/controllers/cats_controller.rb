@@ -52,7 +52,7 @@ class CatsController < ApplicationController
 
   def edit
     unless params[:id].to_i == session[:cat_id]
-      redirect_to(edit_cat_user_path)
+      redirect_to(edit_cat_path)
     end
   end
 

@@ -11,7 +11,7 @@ require 'faker'
 # Is this the best place to put this kind of seeding?
 print "seeding" 
 1000.times do |i|
-#	Cat.create!(name: Faker::Name.name, birthday: Faker::Date.birthday)
+	#Cat.create!(name: Faker::Name.name, birthday: Faker::Date.birthday, email: Faker::Internet.email, password: 'password')
 	rand(6).times do |k|
 		rand2 = rand(1000)
 		if rand2 != i

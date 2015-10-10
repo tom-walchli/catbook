@@ -13,9 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150218192343) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "cats", force: true do |t|
     t.string   "name"
-    t.datetime "birthday",               default: '2015-02-18 14:57:53', null: false
+    t.datetime "birthday",               default: '2015-06-03 14:11:35', null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "visible",                default: true
